@@ -6,10 +6,31 @@ using System.Threading.Tasks;
 
 namespace EventsManager
 {
-    class Category
+    public class Category
     {
-        private string _genre;
+        private string _typeCategory;
 
-        private int _age;
+        public string TypeCategory
+        {
+            get { return _typeCategory; }
+            set { _typeCategory = value; }
+        }
+
+
+        /*private int _ageCategory;
+
+        public int AgeCategory
+        {
+            get { return _ageCategory; }
+            set { _ageCategory = value; }
+        }*/
+
+        public Category (string typeCategory /*int ageCategory*/)
+        {
+            _typeCategory = typeCategory;
+            //_ageCategory = ageCategory;
+
+        }
+
     }
 }

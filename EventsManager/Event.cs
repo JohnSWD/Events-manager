@@ -42,6 +42,15 @@ namespace EventsManager
             set { _description = value; }
         }
 
+        private Category _category;
+
+        public Category Category
+        {
+            get { return _category; }
+            set { _category = value; }
+        }
+
+
         public Event (string name, string location, int price, string description)
         {
             _name = name;

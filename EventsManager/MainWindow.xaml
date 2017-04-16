@@ -36,7 +36,7 @@
                             </Grid.RowDefinitions>
                             <TextBlock  Text="{Binding Path=Name}" FontSize="16"></TextBlock>
                             <TextBlock Grid.Row="1" Text="{Binding Path=Location}" FontSize="14"></TextBlock>
-                            <Button Name="moreInfo" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">Подробнее</Button>
+                            <Button Tag="{Binding}" Name="moreInfo" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Click="moreInfo_Click">Подробнее</Button>
                         </Grid>
                     </Border>
                 </DataTemplate>
