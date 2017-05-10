@@ -16,21 +16,24 @@ namespace EventsManager
             set { _typeCategory = value; }
         }
 
+        public Category() { }
 
-        /*private int _ageCategory;
+        private int _id;
 
-        public int AgeCategory
+        public int Id
         {
-            get { return _ageCategory; }
-            set { _ageCategory = value; }
-        }*/
-
-        public Category (string typeCategory /*int ageCategory*/)
-        {
-            _typeCategory = typeCategory;
-            //_ageCategory = ageCategory;
-
+            get { return _id; }
+            set { _id = value; }
         }
 
+
+
+
+        public Category(string typeCategory, int id )
+        {
+            _typeCategory = typeCategory;
+            _id = id;
+
+        }
     }
 }

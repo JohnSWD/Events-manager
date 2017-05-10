@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace EventsManager
 {
@@ -43,22 +44,35 @@ namespace EventsManager
         }
 
         private Category _category;
-
+        
         public Category Category
         {
             get { return _category; }
             set { _category = value; }
         }
 
+        private int _categoryId;
 
-        public Event (string name, string location, int price, string description)
+        public int CategoryId
+        {
+            get { return _categoryId; }
+            set { _categoryId = value; }
+        }
+
+
+        public Event(string name, string location, int price, string description)
         {
             _name = name;
             _location = location;
             _price = price;
             _description = description;
+            
         }
 
+        public Event()
+        {
+
+        }
 
     }
 }

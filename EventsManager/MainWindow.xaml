@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Список событий" Height="350" Width="525">
     <Grid ShowGridLines="True">
+        
         <Grid.ColumnDefinitions>
 
             <ColumnDefinition Width="397*"></ColumnDefinition>
@@ -14,12 +15,17 @@
 
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" VerticalAlignment="Bottom">
-            <Button Name="btnAdd" Margin="10 10 10 0" Click="btnAdd_Click">Добавить</Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
+            <Button  Name="btnAdd" Margin="10 10 10 0" Click="btnAdd_Click">Добавить</Button>
             <Button Name="btnDel" Margin="10 10 10 10" IsEnabled="False" Click="btnDel_Click">Удалить</Button>
         </StackPanel>
 
-        <ListBox Name="listEvents" Margin="10 10 10 10" HorizontalContentAlignment="Stretch" SelectionChanged="listEvents_SelectionChanged">
+        <ListBox Grid.Row="1" Name="listEvents" Margin="10 10 10 10" HorizontalContentAlignment="Stretch" SelectionChanged="listEvents_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border  BorderThickness="1" BorderBrush="SteelBlue"
@@ -28,7 +34,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                
+
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition></RowDefinition>
@@ -42,7 +48,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-
+        <TextBox Name="searchBox" VerticalAlignment="Center" HorizontalAlignment="Left" Height="25" Width="300" Margin="10"></TextBox>
     </Grid>
 </Window>

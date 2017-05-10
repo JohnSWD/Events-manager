@@ -27,7 +27,7 @@ namespace EventsManager
             Сategories = categories;
         }
         List<Category> Сategories = new List<Category>();
-        
+
 
         private Event _newEvent;
         public Event NewEvent
@@ -43,13 +43,13 @@ namespace EventsManager
             get { return _newCategory; }
             set { _newCategory = value; }
         }
-        
+
 
         private void btnAddNew_Click(object sender, RoutedEventArgs e)
         {
             int price = 0;
-            if(string.IsNullOrWhiteSpace(textBoxName.Text))
-                {
+            if (string.IsNullOrWhiteSpace(textBoxName.Text))
+            {
                 MessageBox.Show("Пожалуйста, введите название события.");
                 textBoxName.Focus();
                 return;
@@ -92,8 +92,9 @@ namespace EventsManager
                     i++;
                 if (i >= Сategories.Count)
                 {
-                    _newCategory = new Category(textBoxCategory.Text);
-                    _newEvent.Category = new Category(textBoxCategory.Text);
+                    _newCategory = new Category(textBoxCategory.Text, Сategories.Count);
+                    _newEvent.Category = _newCategory;
+                    _newEvent.CategoryId = _newCategory.Id;
                 }
 
                 else
@@ -105,14 +106,14 @@ namespace EventsManager
                 }
             }
 
-            
-
-            else _newEvent.Category = comboBoxCategories.SelectedItem as Category;
 
 
+            else { _newEvent.Category = comboBoxCategories.SelectedItem as Category; _newEvent.CategoryId = _newEvent.Category.Id; }
 
-            
-            
+
+
+
+
             DialogResult = true;
         }
     }
