@@ -25,7 +25,6 @@ namespace EventsManager
                 return index > -1;
             };
 
-
             textbox.TextChanged += delegate
             {
                 filterText = textbox.Text;
