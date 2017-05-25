@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EventsManager"
         mc:Ignorable="d"
-        Title="Список событий" Height="350" Width="525">
-    <Grid ShowGridLines="True">
+        Title="Список событий" Height="350" Width="640" MinWidth="640" MinHeight="270">
+    <Grid>
         
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="397*"></ColumnDefinition>
+            <ColumnDefinition Width="390*"></ColumnDefinition>
             <ColumnDefinition Width="120*"></ColumnDefinition>
 
         </Grid.ColumnDefinitions>
@@ -21,8 +21,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
-            <Button  Name="btnAdd" Margin="10 10 10 0" Click="btnAdd_Click">Добавить</Button>
+            <Button Name="btnAdd" Margin="10 10 10 0" Click="btnAdd_Click" IsEnabled="True">Добавить</Button>
             <Button Name="btnDel" Margin="10 10 10 10" IsEnabled="False" Click="btnDel_Click">Удалить</Button>
+            <Button Name="btnToLog" Margin="10 0 10 10" IsEnabled="False" Click="btnToLog_Click">Авторизироваться</Button>
         </StackPanel>
 
         <ListBox Grid.Row="1" Name="listEvents" Margin="10 10 10 10" HorizontalContentAlignment="Stretch" SelectionChanged="listEvents_SelectionChanged">
@@ -48,6 +49,20 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox Name="searchBox" VerticalAlignment="Center" HorizontalAlignment="Left" Height="25" Width="300" Margin="10"></TextBox>
+        <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+            <StackPanel>
+                <TextBlock>Количество событий:</TextBlock>
+                <TextBlock Name="eventsNumber"></TextBlock>
+                <TextBlock>Ближайшее событие:</TextBlock>
+                <TextBlock Name="nextEvent"></TextBlock>
+            </StackPanel>
+        </GroupBox>
+        <TextBox Name="searchBox"  Height="25" VerticalAlignment="Center" Margin="65 10 10 10"></TextBox>
+        <TextBlock Text="Поиск:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"></TextBlock>
+        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Текущий пользователь:"></TextBlock>
+            <TextBlock Text="{Binding Path=UserName}" Name="userTxtBlock"></TextBlock>
+        </StackPanel>
+
     </Grid>
 </Window>

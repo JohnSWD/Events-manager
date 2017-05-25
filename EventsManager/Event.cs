@@ -44,7 +44,7 @@ namespace EventsManager
         }
 
         private Category _category;
-        
+        [XmlIgnore]
         public Category Category
         {
             get { return _category; }
@@ -59,6 +59,13 @@ namespace EventsManager
             set { _categoryId = value; }
         }
 
+        private DateTime _eventDate; 
+
+        public DateTime EventDate
+        {
+            get { return _eventDate; }
+            set { _eventDate = value; }
+        }
 
         public Event(string name, string location, int price, string description)
         {
@@ -69,10 +76,6 @@ namespace EventsManager
             
         }
 
-        public Event()
-        {
-
-        }
-
+        public Event() {}
     }
 }

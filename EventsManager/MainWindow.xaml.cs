@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace EventsManager
 {
@@ -24,26 +25,67 @@ namespace EventsManager
     {
         List<Event> _events = new List<Event>();
         List<Category> _categories = new List<Category>();
+        ICollectionView smth;
+        private LoggingTool lt = new LoggingTool();
+        private User _currentUser;
 
-        public MainWindow()
+        public User CurrentUser
         {
-            InitializeComponent();
-            _categories.Add(new Category("Киберспорт", 0));
-            Event test = new Event("LCS LoL", "NY", 0, "Ежегодная континентальная лига.");
-            test.Category = _categories[0];
-            test.CategoryId = test.Category.Id;
-            GetList();
-            DeserializeData();
-            Update();
+            get { return _currentUser; }
+            set { _currentUser = value; }
+        }
+
+        private LoginWindow LW;
+        
+        public MainWindow(User user, LoginWindow lw)
+        {
+            try {
+                InitializeComponent();
+                CurrentUser = user;
+                if (CurrentUser.UserName == "")
+                {
+                    btnToLog.IsEnabled = true;
+                    btnAdd.IsEnabled = false;
+                    CurrentUser.UserName = "Гость";
+                }
+                LW = lw;
+                userTxtBlock.DataContext = CurrentUser;
+                _categories.Add(new Category("Киберспорт", 0));
+                Event test = new Event("LCS LoL", "NY", 0, "Ежегодная континентальная лига.");
+                test.Category = _categories[0];
+                test.CategoryId = test.Category.Id;
+                //GetList();
+                DeserializeData();
+                Update();
+                smth = CollectionViewSource.GetDefaultView(_events);
+                new SearchTool(smth, this.searchBox);
+                eventsNumber.Text = Convert.ToString(_events.Count());
+                Event next = _events.OrderBy(ev => ev.EventDate).FirstOrDefault();
+                nextEvent.Text = next.Name;
+            }
+            catch(Exception ex)
+            {
+                lt.WriteErrorLog(ex);
+            }
         }
 
         private void Update()
         {
             listEvents.ItemsSource = null;
             listEvents.ItemsSource = _events;
+            eventsNumber.Text = Convert.ToString(_events.Count());
+            Event next = _events.OrderBy(ev => ev.EventDate).FirstOrDefault();
+            nextEvent.Text = next.Name;
         }
 
-        private void GetList()
+        private void GetRelevantData()
+        {
+            foreach (Event eve in _events)
+            {
+                if (DateTime.Compare(eve.EventDate, DateTime.Now) < 0) _events.Remove(eve);
+            }
+        }
+        /*private void GetList()
         {
             using (StreamReader sr = new StreamReader("CategoryList.txt"))
             {
@@ -57,90 +99,131 @@ namespace EventsManager
                     {
                         _categories.Add(new Category(name, _categories.Count));
                     }
-
-
                 }
             }
             Update();
-        }
+        }*/
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            var window = new NewEventWindow(_categories);
-            if (window.ShowDialog().Value)
+            try {
+                var window = new NewEventWindow(_categories, _currentUser);
+                if (window.ShowDialog().Value)
+                {
+                    _events.Add(window.NewEvent);
+                    if (window.NewCategory != null)
+                        _categories.Add(window.NewCategory);
+                    Update();
+                    SerializeData();
+                }
+                smth.Refresh();
+            }
+            catch(Exception ex)
             {
-                _events.Add(window.NewEvent);
-                if (window.NewCategory != null)
-                _categories.Add(window.NewCategory);
-                Update();
-                SerializeData();
+                lt.WriteErrorLog(ex);
             }
         }
 
 
         private void btnDel_Click(object sender, RoutedEventArgs e)
         {
-            if (listEvents.SelectedIndex != -1)
+            try {
+                if (listEvents.SelectedIndex != -1)
+                {
+                    lt.WriteActionLog(string.Format("Пользователь {0} удалил событие {1}", _currentUser.UserName, _events[listEvents.SelectedIndex].Name));
+                    _events.RemoveAt(listEvents.SelectedIndex);
+                    Update();
+                    SerializeData();
+                }
+                smth.Refresh();
+                
+            }
+            catch(Exception ex)
             {
-                _events.RemoveAt(listEvents.SelectedIndex);
-                Update();
-                SerializeData();
+                lt.WriteErrorLog(ex);
             }
         }
 
         private void listEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(_currentUser.UserName!="Гость")
             btnDel.IsEnabled = listEvents.SelectedIndex != -1;
         }
 
         private void moreInfo_Click(object sender, RoutedEventArgs e)
         {
-
-            Button cmd = (Button)sender;
-            Event thisEvent = null;
-            listEvents.SelectedItem = thisEvent;
-            thisEvent = (Event)cmd.Tag;
-            var window = new MoreInfo(thisEvent);
-            if (window.ShowDialog().Value)
-            {
-                if (listEvents.SelectedIndex != -1)
+            try {
+                Button cmd = (Button)sender;
+                Event thisEvent = null;
+                thisEvent = (Event)cmd.Tag;
+                int selectedIndex = _events.IndexOf(thisEvent);
+                var window = new MoreInfo(thisEvent, _currentUser);
+                if (window.ShowDialog().Value)
                 {
-                    _events.RemoveAt(listEvents.SelectedIndex);
-                    Update();
+                    if (selectedIndex!= -1)
+                    {
+                        _events.Add(window.EditedEvent);
+                        _events.RemoveAt(selectedIndex);
+                        Update();
+                        SerializeData();
+                    }
                 }
+                smth.Refresh();
+            }
+            catch(Exception ex)
+            {
+                lt.WriteErrorLog(ex);
             }
         }
 
         private void SerializeData()
         {
-            SrlztnTool data = new SrlztnTool();
-            data.Events = _events;
-            data.Categories = _categories;
-            using (var fs = new FileStream("events.xml", FileMode.Create))
+            try {
+                SrlztnTool data = new SrlztnTool();
+                data.Events = _events;
+                data.Categories = _categories;
+                using (var fs = new FileStream("events.xml", FileMode.Create))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(SrlztnTool));
+                    xml.Serialize(fs, data);
+                }
+            }
+            catch(Exception ex)
             {
-                XmlSerializer xml = new XmlSerializer(typeof(SrlztnTool));
-                xml.Serialize(fs, data);
+                lt.WriteErrorLog(ex);
             }
         }
 
-        private SrlztnTool DeserializeData()
+        private void DeserializeData() 
         {
-            SrlztnTool data;
-            using (var fs = new FileStream("events.xml", FileMode.Open))
-            {
-                XmlSerializer xml = new XmlSerializer(typeof(SrlztnTool));
-                data = (SrlztnTool)xml.Deserialize(fs);
-            }
+            try {
+                SrlztnTool data;
+                using (var fs = new FileStream("events.xml", FileMode.Open))
+                {
+                    XmlSerializer xml = new XmlSerializer(typeof(SrlztnTool));
+                    data = (SrlztnTool)xml.Deserialize(fs);
+                }
 
-            foreach (var evnt in data.Events)
-            {
-                int i = 0;
-                while (evnt.CategoryId != data.Categories[i].Id) i++;
-                evnt.Category = data.Categories[i];
-                _events.Add(evnt);
+                foreach (var evnt in data.Events)
+                {
+                    int i = 0;
+                    while (evnt.CategoryId != data.Categories[i].Id) i++;
+                    evnt.Category = data.Categories[i];
+                    _events.Add(evnt);
+                }
+                _categories = data.Categories;
+                GetRelevantData();
             }
-            return data;
+            catch(Exception ex)
+            {
+                lt.WriteErrorLog(ex);
+            }
         }
 
+        private void btnToLog_Click(object sender, RoutedEventArgs e)
+        {
+            LW.MakeLoginVisible(this);
+            listEvents.SelectedIndex = -1;  
+        }
     }
 }

@@ -25,10 +25,6 @@ namespace EventsManager
             get { return _id; }
             set { _id = value; }
         }
-
-
-
-
         public Category(string typeCategory, int id )
         {
             _typeCategory = typeCategory;
