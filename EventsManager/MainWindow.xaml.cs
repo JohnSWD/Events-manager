@@ -39,6 +39,7 @@ namespace EventsManager
         
         public MainWindow(User user, LoginWindow lw)
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             try {
                 InitializeComponent();
                 CurrentUser = user;
@@ -50,11 +51,7 @@ namespace EventsManager
                 }
                 LW = lw;
                 userTxtBlock.DataContext = CurrentUser;
-                _categories.Add(new Category("Киберспорт", 0));
-                Event test = new Event("LCS LoL", "NY", 0, "Ежегодная континентальная лига.");
-                test.Category = _categories[0];
-                test.CategoryId = test.Category.Id;
-                //GetList();
+
                 DeserializeData();
                 Update();
                 smth = CollectionViewSource.GetDefaultView(_events);
@@ -74,35 +71,23 @@ namespace EventsManager
             listEvents.ItemsSource = null;
             listEvents.ItemsSource = _events;
             eventsNumber.Text = Convert.ToString(_events.Count());
-            Event next = _events.OrderBy(ev => ev.EventDate).FirstOrDefault();
-            nextEvent.Text = next.Name;
+            if (_events.Count() > 0)
+            {
+                Event next = _events.OrderBy(ev => ev.EventDate).FirstOrDefault();
+                nextEvent.Text = next.Name;
+            }
+            else nextEvent.Text = "";
         }
 
         private void GetRelevantData()
         {
+            int i = 0;
             foreach (Event eve in _events)
             {
-                if (DateTime.Compare(eve.EventDate, DateTime.Now) < 0) _events.Remove(eve);
+                if (DateTime.Compare(eve.EventDate, DateTime.Now) < 0) { _events.Remove(eve); i++; }
             }
+            if (i > 0) MessageBox.Show("Было удалено {0} прошедших события", Convert.ToString(i));
         }
-        /*private void GetList()
-        {
-            using (StreamReader sr = new StreamReader("CategoryList.txt"))
-            {
-                while (!sr.EndOfStream)
-                {
-                    var name = sr.ReadLine();
-                    int i = 0;
-                    while (i < _categories.Count && _categories[i].TypeCategory != name)
-                        i++;
-                    if (i >= _categories.Count)
-                    {
-                        _categories.Add(new Category(name, _categories.Count));
-                    }
-                }
-            }
-            Update();
-        }*/
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -224,6 +209,12 @@ namespace EventsManager
         {
             LW.MakeLoginVisible(this);
             listEvents.SelectedIndex = -1;  
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            if (LW != null) LW.Close();
+            Close();   
         }
     }
 }

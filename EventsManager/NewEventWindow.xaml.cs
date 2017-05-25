@@ -23,6 +23,7 @@ namespace EventsManager
         private LoggingTool lt = new LoggingTool();
         public NewEventWindow(List<Category> categories, User user)
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             try {
                 InitializeComponent();
                 categories.Sort((a, b) => a.TypeCategory.CompareTo(b.TypeCategory));
@@ -129,6 +130,7 @@ namespace EventsManager
                 lt.WriteErrorLog(ex);
                 MessageBox.Show("Возникла ошибка при создании нового события.");
             }
+            
             LoggingTool Lt = new LoggingTool();
             Lt.WriteActionLog(string.Format("Пользователь {0} добавил новое событие {1}.", _user.UserName, NewEvent.Name));
             DialogResult = true;

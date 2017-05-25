@@ -6,13 +6,11 @@
         xmlns:local="clr-namespace:EventsManager"
         mc:Ignorable="d"
         Title="Список событий" Height="350" Width="640" MinWidth="640" MinHeight="270">
-    <Grid>
-        
+    <Grid Background="#FF0F1480">
+
         <Grid.ColumnDefinitions>
-
-            <ColumnDefinition Width="390*"></ColumnDefinition>
-            <ColumnDefinition Width="120*"></ColumnDefinition>
-
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -20,16 +18,108 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Rectangle Grid.Column="1" Fill="#FF002A42"></Rectangle>
+        <Rectangle Grid.Row="1" Fill="White"></Rectangle>
+   
         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
-            <Button Name="btnAdd" Margin="10 10 10 0" Click="btnAdd_Click" IsEnabled="True">Добавить</Button>
-            <Button Name="btnDel" Margin="10 10 10 10" IsEnabled="False" Click="btnDel_Click">Удалить</Button>
-            <Button Name="btnToLog" Margin="10 0 10 10" IsEnabled="False" Click="btnToLog_Click">Авторизироваться</Button>
+            <Button  Name="btnAdd" Height="35" Click="btnAdd_Click" IsEnabled="True" Content="Добавить" FontFamily="Segoe Print">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF501CDA"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#FF0F1480"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button  Name="btnDel" Height="35" IsEnabled="False" Click="btnDel_Click" Content="Удалить" FontFamily="Segoe Print">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF501CDA"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#FF0F1480"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Name="btnToLog" Height="35" IsEnabled="False" Click="btnToLog_Click" Content="Авторизироваться" FontFamily="Segoe Print">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF501CDA"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#FF0F1480"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Name="btnExit" Height="35" Click="btnExit_Click"  Content="Выйти" FontFamily="Segoe Print">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF501CDA"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#FF0F1480"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
 
-        <ListBox Grid.Row="1" Name="listEvents" Margin="10 10 10 10" HorizontalContentAlignment="Stretch" SelectionChanged="listEvents_SelectionChanged">
+        <ListBox Grid.Row="1" Name="listEvents" HorizontalContentAlignment="Stretch" SelectionChanged="listEvents_SelectionChanged" Background="White" Grid.ColumnSpan="2" Margin="2,0,154,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border  BorderThickness="1" BorderBrush="SteelBlue"
+                    <Border  BorderThickness="1" BorderBrush="#FF0F1480"
                             CornerRadius="4">
                         <Grid Margin="3">
                             <Grid.ColumnDefinitions>
@@ -41,27 +131,49 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock  Text="{Binding Path=Name}" FontSize="16"></TextBlock>
-                            <TextBlock Grid.Row="1" Text="{Binding Path=Location}" FontSize="14"></TextBlock>
-                            <Button Tag="{Binding}" Name="moreInfo" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Click="moreInfo_Click">Подробнее</Button>
+                            <TextBlock  Text="{Binding Path=Name}" FontSize="16" FontFamily="Segoe Print" Foreground="#FF0F1480"></TextBlock>
+                            <TextBlock Grid.Row="1" Text="{Binding Path=Location}" FontSize="14" FontFamily="Segoe Print" Foreground="#FF0F1480"></TextBlock>
+                            <Button Tag="{Binding}" Name="moreInfo" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Click="moreInfo_Click" Content="Подробнее">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Foreground" Value="#FF0F1480"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="3" BorderThickness="1" BorderBrush="#FF0F1480" >
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF08045B"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+        <GroupBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="2">
             <StackPanel>
-                <TextBlock>Количество событий:</TextBlock>
-                <TextBlock Name="eventsNumber"></TextBlock>
-                <TextBlock>Ближайшее событие:</TextBlock>
-                <TextBlock Name="nextEvent"></TextBlock>
+                <TextBlock FontFamily="Segoe Print" Foreground="White">Количество событий:</TextBlock>
+                <TextBlock Name="eventsNumber" FontFamily="Segoe Print" Foreground="White"></TextBlock>
+                <TextBlock FontFamily="Segoe Print" Foreground="White">Ближайшее событие:</TextBlock>
+                <TextBlock Name="nextEvent" Foreground="White" FontFamily="Segoe Print"></TextBlock>
             </StackPanel>
         </GroupBox>
-        <TextBox Name="searchBox"  Height="25" VerticalAlignment="Center" Margin="65 10 10 10"></TextBox>
-        <TextBlock Text="Поиск:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10"></TextBlock>
+        <TextBox Name="searchBox"  Height="25" VerticalAlignment="Center" Margin="65 10 10 10" FontFamily="Segoe Print" Foreground="#FF383535"></TextBox>
+        <TextBlock Text="Поиск:" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" FontFamily="Segoe Print" Foreground="White"></TextBlock>
         <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Текущий пользователь:"></TextBlock>
-            <TextBlock Text="{Binding Path=UserName}" Name="userTxtBlock"></TextBlock>
+            <TextBlock Text="Текущий пользователь:" FontFamily="Segoe Print" Foreground="White"></TextBlock>
+            <TextBlock Text="{Binding Path=UserName}" Name="userTxtBlock" FontFamily="Segoe Print" Foreground="White"></TextBlock>
         </StackPanel>
 
     </Grid>
