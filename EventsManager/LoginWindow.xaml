@@ -1,0 +1,25 @@
+﻿<Window x:Class="EventsManager.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventsManager"
+        mc:Ignorable="d"
+        Title="Авторизация" Height="350" Width="400" ResizeMode="NoResize">
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/lb.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+        <StackPanel IsHitTestVisible="True">
+            <TextBlock  FontSize="16" Margin="10 10 10 5" FontFamily="Century Gothic" Foreground="White">Логин</TextBlock>
+            <TextBox Height="25" Margin="10 1 10 10" Name="loginBox" FontFamily="Century Gothic"></TextBox>
+            <TextBlock FontSize="16" Margin="10 0 10 5" FontFamily="Century Gothic" Foreground="White">Пароль</TextBlock>
+            <PasswordBox Name="passwordBox" Height="25" Margin="10,1,0,-25" Width="300"  HorizontalAlignment="Left" FontFamily="Century Gothic"></PasswordBox>
+            <Button Name="logIn" Height="25" Width="60" HorizontalAlignment="Right" Margin="10 0 10 10" Click="logIn_Click" FontFamily="Century Gothic" FontWeight="Bold">Войти</Button>
+            <Button Name="signUp" Margin="10 0 10 10" Height="25" Click="signUp_Click" FontFamily="Century Gothic" FontWeight="Bold">Регистрация</Button>
+            <Button Name="guestBtn" Margin="10 0 10 10" Height="25" Click="guestBtn_Click" FontFamily="Century Gothic" FontWeight="Bold">Войти без регистрации</Button>
+        </StackPanel>
+
+    </Grid>
+</Window>
